@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/authors")
 public class AuthorController {
 
-    // TODO: Show auditing upon return
-    // TODO: Add paging and sorting in getting all authors
-
     @Autowired
     private AuthorService authorService;
 
@@ -35,9 +32,9 @@ public class AuthorController {
     }
 
     // Getting author by id
-    @GetMapping("/{id}")
-    public Author getAuthorById(@PathVariable Long id) throws RecordNotFoundException {
-        return authorService.findAuthorById(id);
+    @GetMapping("/{authorId}")
+    public Author getAuthorById(@PathVariable Long authorId) throws RecordNotFoundException {
+        return authorService.findAuthorById(authorId);
     }
 
     // Update author by id
@@ -48,7 +45,7 @@ public class AuthorController {
 
     // Delete book by id
     @DeleteMapping("")
-    public void deleteBook(@PathVariable Long id) throws RecordNotFoundException {
+    public void deleteBook(@RequestParam Long id) throws RecordNotFoundException {
         authorService.deleteAuthor(id);
     }
 

@@ -9,7 +9,7 @@ public interface AuthorService {
 
     Page<Author> findAllAuthors(Pageable pageable);
 
-    Author findAuthorById(Long id) throws RecordNotFoundException;
+    Author findAuthorById(Long authorId) throws RecordNotFoundException;
 
     Author saveAuthor(Author author);
 

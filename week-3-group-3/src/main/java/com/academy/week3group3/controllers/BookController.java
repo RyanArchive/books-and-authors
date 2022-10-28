@@ -14,9 +14,6 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/authors")
 public class BookController {
 
-    // TODO: Show auditing upon return
-    // TODO: Add paging and sorting in getting all authors
-
     @Autowired
     private BookService bookService;
 
@@ -29,7 +26,7 @@ public class BookController {
 
     // Getting all books by author id
     @GetMapping("/{authorId}/books")
-    public ResponseEntity<Page<Book>> getAllBooksByAuthorId(@PathVariable Long authorId, Pageable pageable) {
+    public ResponseEntity<Page<Book>> getBooksByAuthorId(@PathVariable Long authorId, Pageable pageable) {
         Page<Book> book = bookService.findAllBooks(authorId, pageable);
         return new ResponseEntity<>(book, HttpStatus.OK);
     }

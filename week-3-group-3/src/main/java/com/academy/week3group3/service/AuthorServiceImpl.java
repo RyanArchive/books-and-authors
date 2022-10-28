@@ -28,8 +28,8 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author findAuthorById(Long id) throws RecordNotFoundException {
-        Optional<Author> authorOptional = authorRepo.findById(id);
+    public Author findAuthorById(Long authorId) throws RecordNotFoundException {
+        Optional<Author> authorOptional = authorRepo.findById(authorId);
         if (authorOptional.isPresent()) {
             return authorOptional.get();
         } else {
@@ -52,7 +52,11 @@ public class AuthorServiceImpl implements AuthorService {
     @Override
     public void deleteAuthor(Long authorId) throws RecordNotFoundException {
         Optional<Author> authorOptional = authorRepo.findById(authorId);
-        authorOptional.ifPresent(author -> authorRepo.delete(author));
+        if (authorOptional.isPresent()) {
+            authorRepo.delete(authorOptional.get());
+        } else {
+            throw new RecordNotFoundException();
+        }
     }
 
 }

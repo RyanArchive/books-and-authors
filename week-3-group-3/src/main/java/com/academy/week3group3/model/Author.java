@@ -10,12 +10,12 @@ import java.util.List;
 public class Author extends BaseAuditClass {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
 
-//    @OneToMany(cascade = CascadeType.ALL)
-//    private List<Book> bookList;
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    private List<Book> bookList;
 
 
     public Long getId() {
