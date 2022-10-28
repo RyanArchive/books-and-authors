@@ -16,6 +16,12 @@ public class AuthorServiceImpl implements AuthorService {
     @Autowired
     private AuthorRepository authorRepo;
 
+
+    @Override
+    public Author saveAuthor(Author author) {
+        return authorRepo.save(author);
+    }
+
     @Override
     public Page<Author> findAllAuthors(Pageable pageable) {
         return authorRepo.findAll(pageable);
@@ -32,8 +38,21 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author saveAuthor(Author author) {
-        return authorRepo.save(author);
+    public Author updateAuthor(Long authorId, Author author) throws RecordNotFoundException {
+        Optional<Author> authorOptional = authorRepo.findById(authorId);
+        if (authorOptional.isPresent()) {
+            Author oldAuthor = authorOptional.get();
+            oldAuthor.setName(author.getName());
+            return authorRepo.save(oldAuthor);
+        } else {
+            throw new RecordNotFoundException();
+        }
+    }
+
+    @Override
+    public void deleteAuthor(Long authorId) throws RecordNotFoundException {
+        Optional<Author> authorOptional = authorRepo.findById(authorId);
+        authorOptional.ifPresent(author -> authorRepo.delete(author));
     }
 
 }

@@ -34,10 +34,22 @@ public class AuthorController {
         return new ResponseEntity<>(author, HttpStatus.OK);
     }
 
-    // Getting author
+    // Getting author by id
     @GetMapping("/{id}")
     public Author getAuthorById(@PathVariable Long id) throws RecordNotFoundException {
         return authorService.findAuthorById(id);
+    }
+
+    // Update author by id
+    @PutMapping("/{authorId}")
+    public Author updateAuthor(@PathVariable Long authorId, @RequestBody Author author) throws RecordNotFoundException {
+        return authorService.updateAuthor(authorId, author);
+    }
+
+    // Delete book by id
+    @DeleteMapping("")
+    public void deleteBook(@PathVariable Long id) throws RecordNotFoundException {
+        authorService.deleteAuthor(id);
     }
 
 }

@@ -16,7 +16,6 @@ public class BookController {
 
     // TODO: Show auditing upon return
     // TODO: Add paging and sorting in getting all authors
-    // TODO: Add exception
 
     @Autowired
     private BookService bookService;
@@ -29,32 +28,37 @@ public class BookController {
     }
 
     // Getting all books by author id
-    // TODO: Work here
-    @GetMapping
-    public ResponseEntity<Page<Book>> getBooks(Pageable pageable) {
-        Page<Book> book = bookService.findAllBooks(pageable);
+    @GetMapping("/{authorId}/books")
+    public ResponseEntity<Page<Book>> getAllBooksByAuthorId(@PathVariable Long authorId, Pageable pageable) {
+        Page<Book> book = bookService.findAllBooks(authorId, pageable);
         return new ResponseEntity<>(book, HttpStatus.OK);
     }
 
     // Getting book by book id
-    // TODO: Work here
-    @GetMapping("/{id}")
-    public Book getBookById(@PathVariable Long id) throws RecordNotFoundException {
-        return bookService.findBookById(id);
+    @GetMapping("/{authorId}/books/{bookId}")
+    public ResponseEntity<Page<Book>> getBookByBookId(
+            @PathVariable Long authorId,
+            @PathVariable Long bookId,
+            Pageable pageable
+    ) throws RecordNotFoundException {
+        Page<Book> book = bookService.findBookById(authorId, bookId, pageable);
+        return new ResponseEntity<>(book, HttpStatus.OK);
     }
 
-    // Updating book
-    // TODO: Work here
-    @PutMapping("/{id}")
-    public Book updateBook(@PathVariable Long id, @RequestBody Book book) {
-        return bookService.updateBook(id, book);
+    // Update book by id
+    @PutMapping("/{authorId}/books/{bookId}")
+    public Book updateBook(
+            @PathVariable Long authorId,
+            @PathVariable Long bookId,
+            @RequestBody Book book
+    ) throws RecordNotFoundException {
+        return bookService.updateBook(authorId, bookId, book);
     }
 
-    // Deleting book
-    // TODO: Work here
-    @DeleteMapping("")
-    public void deleteBook(@RequestParam Long id) {
-        bookService.deleteBook(id);
+    // Delete book by id
+    @DeleteMapping("/{authorId}/books")
+    public void deleteBook(@PathVariable Long authorId, @RequestParam Long id) throws RecordNotFoundException {
+        bookService.deleteBook(authorId, id);
     }
 
 }

@@ -26,4 +26,20 @@ public abstract class BaseAuditClass {
     @LastModifiedDate
     private Date lastModifiedDate;
 
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public Date getLastModifiedDate() {
+        return lastModifiedDate;
+    }
 }

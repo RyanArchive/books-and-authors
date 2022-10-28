@@ -13,4 +13,8 @@ public interface AuthorService {
 
     Author saveAuthor(Author author);
 
+    Author updateAuthor(Long authorId, Author author) throws RecordNotFoundException;
+
+    void deleteAuthor(Long authorId) throws RecordNotFoundException;
+
 }

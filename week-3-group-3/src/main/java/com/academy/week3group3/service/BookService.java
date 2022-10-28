@@ -7,14 +7,14 @@ import org.springframework.data.domain.Pageable;
 
 public interface BookService {
 
-    Page<Book> findAllBooks(Pageable pageable);
-
-    Book findBookById(Long id) throws RecordNotFoundException;
-
     Book saveBook(Book book, Long id);
 
-    Book updateBook(Long id, Book newBook);
+    Page<Book> findAllBooks(Long authorId, Pageable pageable);
 
-    void deleteBook(Long id);
+    Page<Book> findBookById(Long authorId, Long bookId, Pageable pageable) throws RecordNotFoundException;
+
+    Book updateBook(Long authorId, Long bookId, Book book) throws RecordNotFoundException;
+
+    void deleteBook(Long authorId, Long bookId) throws RecordNotFoundException;
 
 }

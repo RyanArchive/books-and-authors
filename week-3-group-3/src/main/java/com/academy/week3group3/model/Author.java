@@ -3,6 +3,7 @@ package com.academy.week3group3.model;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
@@ -12,6 +13,10 @@ public class Author extends BaseAuditClass {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     private String name;
+
+//    @OneToMany(cascade = CascadeType.ALL)
+//    private List<Book> bookList;
+
 
     public Long getId() {
         return id;
