@@ -1,4 +1,4 @@
-package com.academy.week3group3.exceptions;
+package com.academy.week3group3.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

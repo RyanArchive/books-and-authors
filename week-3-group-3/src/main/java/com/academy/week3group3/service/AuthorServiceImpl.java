@@ -1,6 +1,6 @@
 package com.academy.week3group3.service;
 
-import com.academy.week3group3.exceptions.RecordNotFoundException;
+import com.academy.week3group3.exception.RecordNotFoundException;
 import com.academy.week3group3.model.Author;
 import com.academy.week3group3.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +38,12 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public Author updateAuthor(Long authorId, Author author) throws RecordNotFoundException {
+    public Author updateAuthor(Long authorId, Author newAuthor) throws RecordNotFoundException {
         Optional<Author> authorOptional = authorRepo.findById(authorId);
         if (authorOptional.isPresent()) {
-            Author oldAuthor = authorOptional.get();
-            oldAuthor.setName(author.getName());
-            return authorRepo.save(oldAuthor);
+            Author author = authorOptional.get();
+            author.setName(newAuthor.getName());
+            return authorRepo.save(author);
         } else {
             throw new RecordNotFoundException();
         }

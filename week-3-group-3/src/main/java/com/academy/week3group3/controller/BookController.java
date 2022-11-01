@@ -1,6 +1,6 @@
-package com.academy.week3group3.controllers;
+package com.academy.week3group3.controller;
 
-import com.academy.week3group3.exceptions.RecordNotFoundException;
+import com.academy.week3group3.exception.RecordNotFoundException;
 import com.academy.week3group3.model.Book;
 import com.academy.week3group3.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +20,16 @@ public class BookController {
 
     // Adding book
     @PostMapping("/{authorId}/books")
-    public Book saveBook(@RequestBody Book book, @PathVariable Long authorId) {
+    public Book saveBook(@RequestBody Book book, @PathVariable Long authorId) throws RecordNotFoundException {
         return bookService.saveBook(book, authorId);
     }
 
     // Getting all books by author id
     @GetMapping("/{authorId}/books")
-    public ResponseEntity<Page<Book>> getBooksByAuthorId(@PathVariable Long authorId, Pageable pageable) {
+    public ResponseEntity<Page<Book>> getBooksByAuthorId(
+            @PathVariable Long authorId,
+            Pageable pageable
+    ) throws RecordNotFoundException {
         Page<Book> book = bookService.findAllBooks(authorId, pageable);
         return new ResponseEntity<>(book, HttpStatus.OK);
     }
@@ -47,9 +50,9 @@ public class BookController {
     public Book updateBook(
             @PathVariable Long authorId,
             @PathVariable Long bookId,
-            @RequestBody Book book
+            @RequestBody Book newBook
     ) throws RecordNotFoundException {
-        return bookService.updateBook(authorId, bookId, book);
+        return bookService.updateBook(authorId, bookId, newBook);
     }
 
     // Delete book by id

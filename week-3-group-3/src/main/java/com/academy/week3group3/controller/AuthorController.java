@@ -1,6 +1,6 @@
-package com.academy.week3group3.controllers;
+package com.academy.week3group3.controller;
 
-import com.academy.week3group3.exceptions.RecordNotFoundException;
+import com.academy.week3group3.exception.RecordNotFoundException;
 import com.academy.week3group3.model.Author;
 import com.academy.week3group3.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,8 +39,11 @@ public class AuthorController {
 
     // Update author by id
     @PutMapping("/{authorId}")
-    public Author updateAuthor(@PathVariable Long authorId, @RequestBody Author author) throws RecordNotFoundException {
-        return authorService.updateAuthor(authorId, author);
+    public Author updateAuthor(
+            @PathVariable Long authorId,
+            @RequestBody Author newAuthor
+    ) throws RecordNotFoundException {
+        return authorService.updateAuthor(authorId, newAuthor);
     }
 
     // Delete book by id
