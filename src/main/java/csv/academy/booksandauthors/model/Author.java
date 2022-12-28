@@ -1,6 +1,6 @@
 package csv.academy.booksandauthors.model;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.util.List;
