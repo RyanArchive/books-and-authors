@@ -1,10 +1,10 @@
-package com.academy.week3group3;
+package csv.academy.booksandauthors;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Week3Group3ApplicationTests {
+class BooksAndAuthorsApplicationTests {
 
 	@Test
 	void contextLoads() {

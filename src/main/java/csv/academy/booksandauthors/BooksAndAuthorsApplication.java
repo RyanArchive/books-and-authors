@@ -1,14 +1,13 @@
-package com.academy.week3group3;
+package csv.academy.booksandauthors;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class Week3Group3Application {
+public class BooksAndAuthorsApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(Week3Group3Application.class, args);
-		System.out.println("Up and running...");
+		SpringApplication.run(BooksAndAuthorsApplication.class, args);
 	}
 
 }
