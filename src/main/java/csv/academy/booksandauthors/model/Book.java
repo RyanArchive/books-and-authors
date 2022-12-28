@@ -1,8 +1,7 @@
-package com.academy.week3group3.model;
+package csv.academy.booksandauthors.model;
 
+import jakarta.persistence.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
-import javax.persistence.*;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)

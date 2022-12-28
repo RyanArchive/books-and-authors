@@ -1,13 +1,13 @@
-package com.academy.week3group3.model;
+package csv.academy.booksandauthors.model;
 
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.MappedSuperclass;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.EntityListeners;
-import javax.persistence.MappedSuperclass;
 import java.util.Date;
 
 @MappedSuperclass
@@ -42,4 +42,5 @@ public abstract class BaseAuditClass {
     public Date getLastModifiedDate() {
         return lastModifiedDate;
     }
+
 }

@@ -1,10 +1,10 @@
-package com.academy.week3group3.service;
+package csv.academy.booksandauthors.service;
 
-import com.academy.week3group3.exception.RecordNotFoundException;
-import com.academy.week3group3.model.Author;
-import com.academy.week3group3.model.Book;
-import com.academy.week3group3.repository.AuthorRepository;
-import com.academy.week3group3.repository.BookRepository;
+import csv.academy.booksandauthors.exception.RecordNotFoundException;
+import csv.academy.booksandauthors.model.Author;
+import csv.academy.booksandauthors.model.Book;
+import csv.academy.booksandauthors.repository.AuthorRepository;
+import csv.academy.booksandauthors.repository.BookRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -40,10 +40,7 @@ public class BookServiceImpl implements BookService {
     public Page<Book> findAllBooks(Long authorId, Pageable pageable) throws RecordNotFoundException {
         Optional<Author> authorOptional = authorRepo.findById(authorId);
         if (authorOptional.isPresent()) {
-            List<Book> bookList = bookRepo.findAll(pageable)
-                    .stream()
-                    .filter(item -> item.getAuthor().getId().equals(authorId))
-                    .toList();
+            List<Book> bookList = bookRepo.findAll(pageable).stream().filter(item -> item.getAuthor().getId().equals(authorId)).toList();
             return new PageImpl<>(bookList, pageable, bookList.size());
         } else {
             throw new RecordNotFoundException();
@@ -52,8 +49,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Page<Book> findBookById(Long authorId, Long bookId, Pageable pageable) throws RecordNotFoundException {
-        Optional<Book> bookOptional = bookRepo.findById(bookId)
-                .filter(item -> item.getAuthor().getId().equals(authorId));
+        Optional<Book> bookOptional = bookRepo.findById(bookId).filter(item -> item.getAuthor().getId().equals(authorId));
         if (bookOptional.isPresent()) {
             List<Book> bookList = bookOptional.stream().toList();
             return new PageImpl<>(bookList, pageable, bookList.size());
@@ -64,8 +60,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Book updateBook(Long authorId, Long bookId, Book newBook) throws RecordNotFoundException {
-        Optional<Book> bookOptional = bookRepo.findById(bookId)
-                .filter(item -> item.getAuthor().getId().equals(authorId));
+        Optional<Book> bookOptional = bookRepo.findById(bookId).filter(item -> item.getAuthor().getId().equals(authorId));
         if (bookOptional.isPresent()) {
             Book book = bookOptional.get();
             book.setTitle(newBook.getTitle());
@@ -78,8 +73,7 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteBook(Long authorId, Long bookId) throws RecordNotFoundException {
-        Optional<Book> bookOptional = bookRepo.findById(bookId)
-                .filter(item -> item.getAuthor().getId().equals(authorId));
+        Optional<Book> bookOptional = bookRepo.findById(bookId).filter(item -> item.getAuthor().getId().equals(authorId));
         if (bookOptional.isPresent()) {
             Book book = bookOptional.get();
             bookRepo.delete(book);

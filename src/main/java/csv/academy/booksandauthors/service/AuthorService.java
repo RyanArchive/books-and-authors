@@ -1,7 +1,7 @@
-package com.academy.week3group3.service;
+package csv.academy.booksandauthors.service;
 
-import com.academy.week3group3.exception.RecordNotFoundException;
-import com.academy.week3group3.model.Author;
+import csv.academy.booksandauthors.exception.RecordNotFoundException;
+import csv.academy.booksandauthors.model.Author;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 

@@ -1,8 +1,8 @@
-package com.academy.week3group3.model;
+package csv.academy.booksandauthors.model;
 
+import jakarta.persistence.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import javax.persistence.*;
 import java.util.List;
 
 @Entity
@@ -12,6 +12,7 @@ public class Author extends BaseAuditClass {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String name;
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
