@@ -31,11 +31,8 @@ public class BookController {
     }
 
     @GetMapping("/{authorId}/books/{bookId}")
-    public ResponseEntity<Page<Book>> getBookByBookId(
-            @PathVariable Long authorId, @PathVariable Long bookId, Pageable pageable
-    ) throws RecordNotFoundException {
-        Page<Book> book = bookService.findBookById(authorId, bookId, pageable);
-        return new ResponseEntity<>(book, HttpStatus.OK);
+    public Book getBookByBookId(@PathVariable Long authorId, @PathVariable Long bookId) throws RecordNotFoundException {
+        return bookService.findBookById(authorId, bookId);
     }
 
     @PutMapping("/{authorId}/books/{bookId}")

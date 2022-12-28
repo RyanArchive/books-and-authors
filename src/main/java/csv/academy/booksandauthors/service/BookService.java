@@ -11,7 +11,7 @@ public interface BookService {
 
     Page<Book> findAllBooks(Long authorId, Pageable pageable) throws RecordNotFoundException;
 
-    Page<Book> findBookById(Long authorId, Long bookId, Pageable pageable) throws RecordNotFoundException;
+    Book findBookById(Long authorId, Long bookId) throws RecordNotFoundException;
 
     Book updateBook(Long authorId, Long bookId, Book newBook) throws RecordNotFoundException;
 
