@@ -1,7 +1,8 @@
 package csv.academy.booksandauthors.controller;
 
+import csv.academy.booksandauthors.dto.AuthorRequestDTO;
+import csv.academy.booksandauthors.dto.AuthorResponseDTO;
 import csv.academy.booksandauthors.exception.RecordNotFoundException;
-import csv.academy.booksandauthors.model.Author;
 import csv.academy.booksandauthors.service.AuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -19,25 +20,26 @@ public class AuthorController {
 
 
     @PostMapping
-    public Author saveAuthor(@RequestBody Author author) {
-        return authorService.saveAuthor(author);
+    public AuthorResponseDTO saveAuthor(@RequestBody AuthorRequestDTO authorRequestDTO) {
+        return authorService.saveAuthor(authorRequestDTO);
     }
 
     @GetMapping
-    public ResponseEntity<Page<Author>> getAuthors(Pageable pageable) {
-        Page<Author> author = authorService.findAllAuthors(pageable);
-        return new ResponseEntity<>(author, HttpStatus.OK);
+    public ResponseEntity<Page<AuthorResponseDTO>> getAuthors(Pageable pageable) {
+        Page<AuthorResponseDTO> authorResponseDTOPage = authorService.findAllAuthors(pageable);
+        return new ResponseEntity<>(authorResponseDTOPage, HttpStatus.OK);
     }
 
     @GetMapping("/{authorId}")
-    public Author getAuthorById(@PathVariable Long authorId) throws RecordNotFoundException {
+    public AuthorResponseDTO getAuthorById(@PathVariable Long authorId) throws RecordNotFoundException {
         return authorService.findAuthorById(authorId);
     }
 
-    @PutMapping("/{authorId}")
-    public Author updateAuthor(@PathVariable Long authorId, @RequestBody Author newAuthor)
-            throws RecordNotFoundException {
-        return authorService.updateAuthor(authorId, newAuthor);
+    @PatchMapping("/{authorId}")
+    public AuthorResponseDTO updateAuthor(
+            @PathVariable Long authorId, @RequestBody AuthorRequestDTO newAuthorRequestDTO
+    ) throws RecordNotFoundException {
+        return authorService.updateAuthor(authorId, newAuthorRequestDTO);
     }
 
     @DeleteMapping()

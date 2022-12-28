@@ -1,6 +1,9 @@
 package csv.academy.booksandauthors.service;
 
+import csv.academy.booksandauthors.dto.BookRequestDTO;
+import csv.academy.booksandauthors.dto.BookResponseDTO;
 import csv.academy.booksandauthors.exception.RecordNotFoundException;
+import csv.academy.booksandauthors.mapper.BookMapper;
 import csv.academy.booksandauthors.model.Author;
 import csv.academy.booksandauthors.model.Book;
 import csv.academy.booksandauthors.repository.AuthorRepository;
@@ -18,27 +21,35 @@ import java.util.Optional;
 public class BookServiceImpl implements BookService {
 
     @Autowired
-    private BookRepository bookRepo;
+    private BookRepository bookRepository;
 
     @Autowired
-    private AuthorRepository authorRepo;
+    private AuthorRepository authorRepository;
+
+    @Autowired
+    private BookMapper bookMapper;
 
 
     @Override
-    public Book saveBook(Book book, Long authorId) throws RecordNotFoundException {
-        Optional<Author> authorOptional = authorRepo.findById(authorId);
+    public BookResponseDTO saveBook(BookRequestDTO bookRequestDTO, Long authorId) throws RecordNotFoundException {
+        Optional<Author> authorOptional = authorRepository.findById(authorId);
         if (authorOptional.isPresent()) {
             Author author = authorOptional.get();
+            Book book = bookMapper.requestDtoToModel(bookRequestDTO);
             book.setAuthor(author);
-            return bookRepo.save(book);
+            Book savedBook = bookRepository.save(book);
+            return bookMapper.modelToResponseDto(savedBook);
         } else {
             throw new RecordNotFoundException();
         }
     }
 
     @Override
-    public Page<Book> findAllBooks(Long authorId, Pageable pageable) throws RecordNotFoundException {
-        List<Book> bookList = bookRepo.findBookByAuthorId(authorId);
+    public Page<BookResponseDTO> findAllBooks(Long authorId, Pageable pageable) throws RecordNotFoundException {
+        List<BookResponseDTO> bookList = bookRepository.findBookByAuthorId(authorId)
+                .stream()
+                .map(bookMapper::modelToResponseDto)
+                .toList();
         if (!bookList.isEmpty()) {
             return new PageImpl<>(bookList, pageable, bookList.size());
         } else {
@@ -47,23 +58,26 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public Book findBookById(Long authorId, Long bookId) throws RecordNotFoundException {
-        Optional<Book> bookOptional = bookRepo.findBookByAuthorIdAndId(authorId, bookId);
+    public BookResponseDTO findBookById(Long authorId, Long bookId) throws RecordNotFoundException {
+        Optional<Book> bookOptional = bookRepository.findBookByAuthorIdAndId(authorId, bookId);
         if (bookOptional.isPresent()) {
-            return bookOptional.get();
+            Book book = bookOptional.get();
+            return bookMapper.modelToResponseDto(book);
         } else {
             throw new RecordNotFoundException();
         }
     }
 
     @Override
-    public Book updateBook(Long authorId, Long bookId, Book newBook) throws RecordNotFoundException {
-        Optional<Book> bookOptional = bookRepo.findBookByAuthorIdAndId(authorId, bookId);
+    public BookResponseDTO updateBook(Long authorId, Long bookId, BookRequestDTO newBookRequestDTO)
+            throws RecordNotFoundException {
+        Optional<Book> bookOptional = bookRepository.findBookByAuthorIdAndId(authorId, bookId);
         if (bookOptional.isPresent()) {
             Book book = bookOptional.get();
-            book.setTitle(newBook.getTitle());
-            book.setDescription(newBook.getDescription());
-            return bookRepo.save(book);
+            book.setTitle(newBookRequestDTO.getTitle());
+            book.setDescription(newBookRequestDTO.getDescription());
+            Book updatedBook = bookRepository.save(book);
+            return bookMapper.modelToResponseDto(updatedBook);
         } else {
             throw new RecordNotFoundException();
         }
@@ -71,10 +85,10 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public void deleteBook(Long authorId, Long bookId) throws RecordNotFoundException {
-        Optional<Book> bookOptional = bookRepo.findBookByAuthorIdAndId(authorId, bookId);
+        Optional<Book> bookOptional = bookRepository.findBookByAuthorIdAndId(authorId, bookId);
         if (bookOptional.isPresent()) {
             Book book = bookOptional.get();
-            bookRepo.delete(book);
+            bookRepository.delete(book);
         } else {
             throw new RecordNotFoundException();
         }

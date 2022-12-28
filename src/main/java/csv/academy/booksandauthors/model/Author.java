@@ -1,13 +1,17 @@
 package csv.academy.booksandauthors.model;
 
-import javax.persistence.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.*;
 import java.util.List;
 
 @Entity
 @EntityListeners(AuditingEntityListener.class)
-public class Author extends BaseAuditClass {
+@Data
+@EqualsAndHashCode(callSuper = true)
+public class Author extends BaseAudit {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,22 +21,5 @@ public class Author extends BaseAuditClass {
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     private List<Book> bookList;
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
 
 }
