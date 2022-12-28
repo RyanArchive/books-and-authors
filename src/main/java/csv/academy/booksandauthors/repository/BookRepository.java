@@ -1,9 +1,17 @@
-package com.academy.week3group3.repository;
+package csv.academy.booksandauthors.repository;
 
-import com.academy.week3group3.model.Book;
+import csv.academy.booksandauthors.model.Book;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface BookRepository extends PagingAndSortingRepository<Book, Long> {
+
+    List<Book> findBookByAuthorId(Long authorId);
+
+    Optional<Book> findBookByAuthorIdAndId(Long authorId, Long bookId);
+
 }

@@ -1,8 +1,9 @@
-package com.academy.week3group3.controller;
+package csv.academy.booksandauthors.controller;
 
-import com.academy.week3group3.exception.RecordNotFoundException;
-import com.academy.week3group3.model.Book;
-import com.academy.week3group3.service.BookService;
+import csv.academy.booksandauthors.dto.BookRequestDTO;
+import csv.academy.booksandauthors.dto.BookResponseDTO;
+import csv.academy.booksandauthors.exception.RecordNotFoundException;
+import csv.academy.booksandauthors.service.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,44 +19,32 @@ public class BookController {
     private BookService bookService;
 
 
-    // Adding book
     @PostMapping("/{authorId}/books")
-    public Book saveBook(@RequestBody Book book, @PathVariable Long authorId) throws RecordNotFoundException {
-        return bookService.saveBook(book, authorId);
+    public BookResponseDTO saveBook(@RequestBody BookRequestDTO bookRequestDTO, @PathVariable Long authorId)
+            throws RecordNotFoundException {
+        return bookService.saveBook(bookRequestDTO, authorId);
     }
 
-    // Getting all books by author id
     @GetMapping("/{authorId}/books")
-    public ResponseEntity<Page<Book>> getBooksByAuthorId(
-            @PathVariable Long authorId,
-            Pageable pageable
-    ) throws RecordNotFoundException {
-        Page<Book> book = bookService.findAllBooks(authorId, pageable);
-        return new ResponseEntity<>(book, HttpStatus.OK);
+    public ResponseEntity<Page<BookResponseDTO>> getBooksByAuthorId(@PathVariable Long authorId, Pageable pageable)
+            throws RecordNotFoundException {
+        Page<BookResponseDTO> bookResponseDTOPage = bookService.findAllBooks(authorId, pageable);
+        return new ResponseEntity<>(bookResponseDTOPage, HttpStatus.OK);
     }
 
-    // Getting book by book id
     @GetMapping("/{authorId}/books/{bookId}")
-    public ResponseEntity<Page<Book>> getBookByBookId(
-            @PathVariable Long authorId,
-            @PathVariable Long bookId,
-            Pageable pageable
-    ) throws RecordNotFoundException {
-        Page<Book> book = bookService.findBookById(authorId, bookId, pageable);
-        return new ResponseEntity<>(book, HttpStatus.OK);
+    public BookResponseDTO getBookByBookId(@PathVariable Long authorId, @PathVariable Long bookId)
+            throws RecordNotFoundException {
+        return bookService.findBookById(authorId, bookId);
     }
 
-    // Update book by id
     @PutMapping("/{authorId}/books/{bookId}")
-    public Book updateBook(
-            @PathVariable Long authorId,
-            @PathVariable Long bookId,
-            @RequestBody Book newBook
+    public BookResponseDTO updateBook(
+            @PathVariable Long authorId, @PathVariable Long bookId, @RequestBody BookRequestDTO newBookRequestDTO
     ) throws RecordNotFoundException {
-        return bookService.updateBook(authorId, bookId, newBook);
+        return bookService.updateBook(authorId, bookId, newBookRequestDTO);
     }
 
-    // Delete book by id
     @DeleteMapping("/{authorId}/books")
     public void deleteBook(@PathVariable Long authorId, @RequestParam Long id) throws RecordNotFoundException {
         bookService.deleteBook(authorId, id);

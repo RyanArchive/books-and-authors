@@ -1,49 +1,65 @@
-package com.academy.week3group3.service;
+package csv.academy.booksandauthors.service;
 
-import com.academy.week3group3.exception.RecordNotFoundException;
-import com.academy.week3group3.model.Author;
-import com.academy.week3group3.repository.AuthorRepository;
+import csv.academy.booksandauthors.dto.AuthorRequestDTO;
+import csv.academy.booksandauthors.dto.AuthorResponseDTO;
+import csv.academy.booksandauthors.exception.RecordNotFoundException;
+import csv.academy.booksandauthors.mapper.AuthorMapper;
+import csv.academy.booksandauthors.model.Author;
+import csv.academy.booksandauthors.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
 public class AuthorServiceImpl implements AuthorService {
 
     @Autowired
-    private AuthorRepository authorRepo;
+    private AuthorRepository authorRepository;
+
+    @Autowired
+    private AuthorMapper authorMapper;
 
 
     @Override
-    public Author saveAuthor(Author author) {
-        return authorRepo.save(author);
+    public AuthorResponseDTO saveAuthor(AuthorRequestDTO authorRequestDTO) {
+        Author author = authorMapper.requestDtoToModel(authorRequestDTO);
+        Author savedAuthor = authorRepository.save(author);
+        return authorMapper.modelToResponseDto(savedAuthor);
     }
 
     @Override
-    public Page<Author> findAllAuthors(Pageable pageable) {
-        return authorRepo.findAll(pageable);
+    public Page<AuthorResponseDTO> findAllAuthors(Pageable pageable) {
+        List<AuthorResponseDTO> authorResponseDTOList = authorRepository.findAll(pageable)
+                .map(authorMapper::modelToResponseDto)
+                .toList();
+        return new PageImpl<>(authorResponseDTOList, pageable, authorResponseDTOList.size());
     }
 
     @Override
-    public Author findAuthorById(Long authorId) throws RecordNotFoundException {
-        Optional<Author> authorOptional = authorRepo.findById(authorId);
+    public AuthorResponseDTO findAuthorById(Long authorId) throws RecordNotFoundException {
+        Optional<Author> authorOptional = authorRepository.findById(authorId);
         if (authorOptional.isPresent()) {
-            return authorOptional.get();
+            Author author = authorOptional.get();
+            return authorMapper.modelToResponseDto(author);
         } else {
             throw new RecordNotFoundException();
         }
     }
 
     @Override
-    public Author updateAuthor(Long authorId, Author newAuthor) throws RecordNotFoundException {
-        Optional<Author> authorOptional = authorRepo.findById(authorId);
+    public AuthorResponseDTO updateAuthor(Long authorId, AuthorRequestDTO newAuthorRequestDTO)
+            throws RecordNotFoundException {
+        Optional<Author> authorOptional = authorRepository.findById(authorId);
         if (authorOptional.isPresent()) {
             Author author = authorOptional.get();
-            author.setName(newAuthor.getName());
-            return authorRepo.save(author);
+            author.setName(newAuthorRequestDTO.getName());
+            Author updatedAuthor = authorRepository.save(author);
+            return authorMapper.modelToResponseDto(updatedAuthor);
         } else {
             throw new RecordNotFoundException();
         }
@@ -51,9 +67,9 @@ public class AuthorServiceImpl implements AuthorService {
 
     @Override
     public void deleteAuthor(Long authorId) throws RecordNotFoundException {
-        Optional<Author> authorOptional = authorRepo.findById(authorId);
+        Optional<Author> authorOptional = authorRepository.findById(authorId);
         if (authorOptional.isPresent()) {
-            authorRepo.delete(authorOptional.get());
+            authorRepository.delete(authorOptional.get());
         } else {
             throw new RecordNotFoundException();
         }

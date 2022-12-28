@@ -1,4 +1,4 @@
-package com.academy.week3group3.configuration;
+package csv.academy.booksandauthors.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,7 +13,7 @@ public class JPAAuditingConfig {
 
     @Bean
     public AuditorAware<String> auditorProvider() {
-        return () -> Optional.ofNullable("Group 3");
+        return () -> Optional.of("Ryan");
     }
 
 }

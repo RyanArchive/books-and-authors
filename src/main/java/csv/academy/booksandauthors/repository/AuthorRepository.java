@@ -1,6 +1,6 @@
-package com.academy.week3group3.repository;
+package csv.academy.booksandauthors.repository;
 
-import com.academy.week3group3.model.Author;
+import csv.academy.booksandauthors.model.Author;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 
