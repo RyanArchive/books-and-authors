@@ -46,11 +46,12 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public Page<BookResponseDTO> findAllBooks(Long authorId, Pageable pageable) throws RecordNotFoundException {
-        List<BookResponseDTO> bookList = bookRepository.findBookByAuthorId(authorId)
-                .stream()
-                .map(bookMapper::modelToResponseDto)
-                .toList();
-        if (!bookList.isEmpty()) {
+        Optional<Author> authorOptional = authorRepository.findById(authorId);
+        if (authorOptional.isPresent()) {
+            List<BookResponseDTO> bookList = bookRepository.findBookByAuthorId(authorId)
+                    .stream()
+                    .map(bookMapper::modelToResponseDto)
+                    .toList();
             return new PageImpl<>(bookList, pageable, bookList.size());
         } else {
             throw new RecordNotFoundException();
