@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/authors")
+@CrossOrigin(origins = "http://localhost:3000")
 public class BookController {
 
     @Autowired
